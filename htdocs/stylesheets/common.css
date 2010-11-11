@@ -1,0 +1,20 @@
+* {
+	font-family: Lucida Grande;
+}
+
+table {
+	width: 100%;
+	border: 1px solid gray;
+}
+
+table th {
+	background: silver;
+	text-align: left;
+}
+
+label {
+	width: 200px;
+	display: block;
+	float: left;
+	clear: left;
+}

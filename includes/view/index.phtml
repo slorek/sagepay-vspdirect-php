@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>SagePay VSP Direct Demo</title>
+	
+	<script type="text/javascript" src="javascripts/common.js"></script>
+	<link rel="stylesheet" href="/stylesheets/common.css" type="text/css" media="all" />
+</head>
+
+<body>
+
+
+<h1>SagePay VSP Direct Demo</h1>
+
+
+<h2>Transactions</h2>
+
+<?php
+  if (!$transactions) {
+?>
+
+<p>There have been no transactions yet.</p>
+
+<?php
+  } else {
+?>
+
+<p>The following transactions have been authenticated.</p>
+
+<table cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th>Debited</th>
+      <th></th>
+    </tr>
+  </thead>
+  
+  <tbody>
+  
+  <?php
+    foreach ($transactions as $transaction) {
+  ?>
+  
+  <tr class="transaction" id="<?php echo $transaction->id ?>">
+    <td><?php echo $transaction->created_at ?></td>
+    <td><?php echo $transaction->description ?></td>
+    <td>&pound;<?php echo number_format($transaction->amount, 2) ?></td>
+    <td>&pound;<?php echo number_format($transaction->total_debited, 2) ?></td>
+    <td><a class="authorise_link" id="authorise_link_<?php echo $transaction->id ?>" href="#">Authorise</a></td>
+  </tr>
+  
+  <tr class="authorise" id="authorise_<?php echo $transaction->id ?>">
+    <td colspan="5">
+      
+      <h3>Authorise Transaction</h3>
+      
+      <p>Debit the card by the amount specified.</p>
+      
+      <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <input type="hidden" name="authorise" value="<?php echo $transaction->id ?>" />
+        
+        <div class="form_field">
+          <label for="authorise_<?php echo $transaction->id ?>_amount">Amount to Debit (&pound;)</label>
+          <input type="text" name="amount" id="authorise_<?php echo $transaction->id ?>_amount" value="10.00" />
+        </div>
+        
+        <div class="form_field">
+          <label for="authorise_<?php echo $transaction->id ?>_description">Description</label>
+          <input type="text" name="description" id="authorise_<?php echo $transaction->id ?>_description" value="Test authorise transaction" />
+        </div>
+        
+        <div class="submit">
+          <input type="submit" value="Process Payment" />
+        </div>
+      </form>
+    </td>
+  </tr>
+  
+  
+  <?php
+    }
+  ?>
+  
+  </tbody>
+</table>
+
+<?php
+  }
+?>
+
+
+<h2>New Transaction</h2>
+
+<p>Authenticate a new transaction below. Transactions are being performed in TEST mode. The default values are for the test Visa card.</p>
+
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+  <input type="hidden" name="submit" value="1" />
+  
+  <div class="form_field">
+    <label for="amount">Amount to Debit (&pound;)</label>
+    <input type="text" name="amount" id="amount" value="100.00" />
+  </div>
+
+  <div class="form_field">
+    <label for="description">Description</label>
+    <input type="text" name="description" id="description" value="Test payment transaction" />
+  </div>
+  
+  <div class="form_field">
+    <label for="cardholder">Card Holder</label>
+    <input type="text" name="cardholder" id="cardholder" value="Mr T Test" />
+  </div>
+  
+  <div class="form_field">
+    <label for="cardnumber">Card Number</label>
+    <input type="text" name="cardnumber" id="cardnumber" value="4929000000006" size="16" maxlength="16" />
+  </div>
+  
+  <div class="form_field">
+    <label for="cardtype">Card Type</label>
+    <select name="cardtype" id="cardtype">
+      <option value="VISA" selected="selected">Visa</option>
+      <option value="MC">Master Card</option>
+    </select>
+  </div>
+  
+  <div class="form_field">
+    <label for="cardexpiry">Card Expiry Date (MMYY)</label>
+    <input type="text" name="cardexpiry" id="cardexpiry" value="0909" size="4" maxlength="4" />
+  </div>
+  
+  <div class="form_field">
+    <label for="cardcv2">Card CV2 Code</label>
+    <input type="text" name="cardcv2" id="cardcv2" value="123" size="3" maxlength="3" />
+  </div>
+  
+  <div class="form_field">
+    <label for="billingaddress">Billing Address</label>
+    <input type="text" name="billingaddress" id="billingaddress" value="88" />
+  </div>
+  
+  <div class="form_field">
+    <label for="billingpostcode">Billing Post Code</label>
+    <input type="text" name="billingpostcode" id="billingpostcode" value="412" />
+  </div>
+  
+  <div class="submit">
+    <input type="submit" value="Authenticate Payment" />
+  </div>
+  
+</form>
+
+</body>
+</html>

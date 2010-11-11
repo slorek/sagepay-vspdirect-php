@@ -1,0 +1,3 @@
+= Sage Pay VSP Direct PHP Implementation
+
+A PHP model and demo interface for the Sage Pay VSP Direct API.
